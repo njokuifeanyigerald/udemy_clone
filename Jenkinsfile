@@ -13,14 +13,15 @@
         }
         stage('Deploy staging ') { 
             steps { 
-                echo 'I am deploying to a staging server
+                echo 'I am deploying to a staging serve'
             }
         }
 
         stage ( 'Deploy prod') { 
             steps { 
-                echo 'I am deploying to prod server
+                echo 'I am deploying to prod serve'
 
             }
         }
-    }}
+    }
+}
