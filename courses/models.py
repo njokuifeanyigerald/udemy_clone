@@ -17,7 +17,10 @@ class Sector(models.Model):
     sector_image = models.ImageField(upload_to='sector_image')
 
     def get_image_absolute_url(self):
-        return 'http://127.0.0.1:8000'+self.sector_image
+        return 'http://127.0.0.1:8000'+self.sector_image.url
+
+    def __str__(self):
+        return self.name 
 
 class Course(models.Model):
     title = models.CharField(max_length=300)
@@ -42,17 +45,24 @@ class Course(models.Model):
 
     def get_total_lectures(self):
         lectures = 0
-        for section in self.course_section:
-            lectures+= len(section.episode.all())
+        for section in self.course_section.all():
+            lectures+= len(section.episodes.all())
         return lectures
 
     def total_course_length(self):
         length = Decimal(0.0)
-        for section in self.course_section:
-            for episode in section.episode.all():
+        for section in self.course_section.all():
+            for episode in section.episodes.all():
                 length+= episode.length
 
         return get_timer(length, type='short')
+
+    def get_absolute_image_url(self):
+        return 'http://127.0.0.1:8000'+ self.image_url.url
+
+
+    def __str__(self):
+        return self.title 
 
     
 
@@ -65,9 +75,12 @@ class CourseSelection(models.Model):
 
     def total_length(self):
         total=Decimal(0.0)
-        for episode in self.episodes:
+        for episode in self.episodes.all():
             total+= episode.length
         return get_timer(total, type='min')
+
+    def __str__(self):
+        return self.section_title 
 
 class Episode(models.Model):
     title = models.CharField(max_length=300)
@@ -85,15 +98,22 @@ class Episode(models.Model):
         return get_timer(self.length)
 
     def get_absolute_url(self):
-        return 'http://127.0.0.1:8000'+self.file
+        return 'http://127.0.0.1:8000'+self.file.url
 
     def save(self, *args, **kwargs):
         self.length = self.get_video_length()
         return super().save(*args, **kwargs)
 
+    
+    def __str__(self):
+        return self.title 
 
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     message = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+
+
+    # def __str__(self):
+    #     return self.user.name
