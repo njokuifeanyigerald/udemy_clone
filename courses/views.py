@@ -148,11 +148,16 @@ class CourseStudy(APIView):
         except Course.DoesNotExist:
             return HttpResponseNotFound("course does not exist")
 
-        request.user = User.objects.get(id=1)
-        user_course = request.user.paid_courses.filter(course_uuid=course_uuid)
+        # to remove later
+        if request.user.is_authenticated:
+            # request.user = User.objects.get(id=1)
+            user_course = request.user.paid_courses.filter(course_uuid=course_uuid)
 
-        if not user_course:
-            return HttpResponseNotAllowed('user does not own this course')
+            if not user_course:
+                return HttpResponseNotAllowed('user does not own this course')
+        else:
+            return Response("user is not authenticated")
+            
 
         serializer = CoursePaidSerializer(course[0])
 

@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 import json
 
+from .models import PaymentIntent
 
 from courses.models import Course
 
@@ -57,4 +58,7 @@ class PaymentHandler(APIView):
                 cancel_url='http://localhost:3000/failure',
             )
 
-            session, err := checkout_session.New(params)
+            intent = PaymentIntent.objects.create(
+                payemnt_intent_id = checkout_session.payment_intent,
+                checkout_id = checkout_session
+            )
