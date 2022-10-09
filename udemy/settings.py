@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 
     'courses',
     'users',
+    'payments',
 
     'rest_framework'
 ]

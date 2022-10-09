@@ -30,7 +30,7 @@ class Course(models.Model):
     author =  models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     language = models.CharField(max_length=300)
     course_section = models.ManyToManyField('CourseSelection')
-    comments = models.ManyToManyField('Comment')
+    comments = models.ManyToManyField('Comment', null=True, blank=True)
     image_url = models.ImageField(upload_to='course_images')
     course_uuid = models.UUIDField(default=uuid.uuid4,unique=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
@@ -85,7 +85,7 @@ class CourseSelection(models.Model):
 class Episode(models.Model):
     title = models.CharField(max_length=300)
     file = models.FileField(upload_to='course_videos')
-    length = models.DecimalField(max_digits=10, decimal_places=2)
+    length = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def get_video_length(self):
         try:

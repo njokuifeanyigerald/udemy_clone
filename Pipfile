@@ -9,6 +9,7 @@ djangorestframework = "*"
 mutagen = "*"
 drf-yasg = "*"
 pillow = "*"
+stripe = "*"
 
 [dev-packages]
 
