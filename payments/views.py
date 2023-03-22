@@ -105,6 +105,7 @@ class Webhook(APIView):
                 total_amount=Decimal(session.amount_total/100)
             )
 
+            # adding the paid course to the user profile
             intent.user.paid_courses.add(*intent.course.all())
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)

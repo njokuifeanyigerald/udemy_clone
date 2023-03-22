@@ -71,13 +71,14 @@ class SectorCourse(APIView):
 class SearchCourse(APIView):
     def get(self, request, search):
         matches = Course.objects.filter(Q(title__icontains=search) | Q(description__icontains=search))
-        if not matches:
+        if not matches: 
             return HttpResponseNotFound('search term not found in the database')
         serializer = CourseListSerializer(matches, many=True)
         return Response(data=serializer.data ,status=status.HTTP_200_OK)
 
 
 class AddComment(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def post(self, request,course_uuid,*args,**kwargs):
         try:
             course = Course.objects.get(course_uuid=course_uuid)
@@ -104,12 +105,15 @@ class AddComment(APIView):
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GetCartDetail(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def post(self, request):
         try:
             body = json.loads(request.body)
 
         except json.decoder.JSONDecodeError:
             return HttpResponseBadRequest()
+
+        
         
         # because a cart should a list of course uuids
         if type(body.get('cart')) != list:
@@ -142,6 +146,7 @@ class GetCartDetail(APIView):
         return Response(data=context, status=status.HTTP_200_OK)
 
 class CourseStudy(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request, course_uuid):
         try:
             course = Course.objects.filter(course_uuid=course_uuid)

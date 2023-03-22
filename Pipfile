@@ -10,6 +10,9 @@ mutagen = "*"
 drf-yasg = "*"
 pillow = "*"
 stripe = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 

@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +32,99 @@ INSTALLED_APPS = [
     'users',
     'payments',
 
-    'rest_framework'
+
+
+    # RESF FRAMEWORK
+    'rest_framework',
+
+    # SIMPLEJWT
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+
+    # CORS
+    "corsheaders",
+
+    'djoser',
+]
+
+
+# REST FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ]
+}
+
+# JWT
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_TOKEN_CLASSES': (
+        'rest_framework_simplejwt.tokens.AccessToken',
+    )
+}
+
+
+# MOSTLY USED FOR DRF AUTHENTICATION
+DJOSER = {
+    'LOGIN_FIELD': 'email' ,
+    # so someone can retype their password
+    'USER_CREATE_PASSWORD_RETYPE': True,
+    # automatically it is True, so i set it to False
+    'SEND_ACTIVATION_EMAIL': False,
+    'SERIALIZERS': {
+        # from the authentication app
+        'user_create':  'users.serializer.UserCreationSerializer',
+        'user': 'users.serializer.UserCreationSerializer',
+
+        'user_delete' : 'djoser.serializers.UserDeleteSerializer',
+    }
+}
+
+
+# CORS HEADERS
+#  INORDER FOR THE FRONTEND TO BE ABLE TO USE THE API URL
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    # CORS HEADERS
+    "corsheaders.middleware.CorsMiddleware",
+
 ]
 
 MIDDLEWARE = [
