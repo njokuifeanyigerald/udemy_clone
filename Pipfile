@@ -13,8 +13,6 @@ stripe = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
 django-cors-headers = "*"
-whitenoise = "*"
-gunicorn = "*"
 
 [dev-packages]
 
