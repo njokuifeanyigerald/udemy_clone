@@ -17,6 +17,8 @@ import json
 
 class CourseHomeView(APIView):
     def get(self, request, *args, **kwargs):
+        permission_classes = [permissions.AllowAny]
+
         # to make it random and slice and output 6
         sectors = Sector.objects.order_by("?")[:6]
 
@@ -38,6 +40,7 @@ class CourseHomeView(APIView):
 
 
 class CourseDetailView(APIView):
+    permission_classes = [permissions.AllowAny]
     def get(self, request, course_uuid,*args, **kwargs):
         course= Course.objects.filter(course_uuid=course_uuid)
 
@@ -49,6 +52,7 @@ class CourseDetailView(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 class SectorCourse(APIView):
+    permission_classes = [permissions.AllowAny]
     def get(self, request, sector_uuid, *args, **kwargs):
         sector = Sector.objects.filter(sector_uuid=sector_uuid)
         if not sector:
@@ -69,6 +73,7 @@ class SectorCourse(APIView):
 
 
 class SearchCourse(APIView):
+    permission_classes = [permissions.AllowAny]
     def get(self, request, search):
         matches = Course.objects.filter(Q(title__icontains=search) | Q(description__icontains=search))
         if not matches: 

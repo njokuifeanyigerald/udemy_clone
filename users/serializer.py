@@ -14,4 +14,4 @@ class UserCreationSerializer(UserCreateSerializer):
     courses = serializers.ListField(source='')
     class Meta(UserCreateSerializer.Meta):
         model = User 
-        fields = {"id","name", "email", "courses"}
+        fields = ["id","name", "email", "courses"]
