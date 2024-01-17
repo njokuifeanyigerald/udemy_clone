@@ -15,7 +15,7 @@ SECRET_KEY = 'django-insecure-lxetif-4jrj5$4)8hf2_vfbq2@binh0itj605ivu9v0k5l2w_)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -113,28 +113,21 @@ CORS_ALLOW_HEADERS = [
 ]
 
 
-MIDDLEWARE = [
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
-    # CORS HEADERS
-    "corsheaders.middleware.CorsMiddleware",
-
-]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # render
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # CORS HEADERS
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = 'udemy.urls'
@@ -203,16 +196,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+
+
 STATIC_URL = 'static/'
-MEDIA_URL = 'media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
-MEDIA_ROOT = BASE_DIR/'media'
-STATIC_ROOT = BASE_DIR/'staticfiles'
 
-STATICFILES_DIRS = [
-    BASE_DIR/'static'
-]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+#ONCE i START USING WHITENOISE, i HAVE TO COMMENT OUT THIS LINE 
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'staticfiles')
+# ]
+
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 AUTH_USER_MODEL = 'users.User'
 

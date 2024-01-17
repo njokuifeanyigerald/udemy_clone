@@ -53,7 +53,7 @@ class SectorCourse(APIView):
         sector = Sector.objects.filter(sector_uuid=sector_uuid)
         if not sector:
             return HttpResponseNotFound('sector does not exist')
-            # because of manay to many fiels of rwlated courses in the sector model
+            # because of manay to many fiels of related courses in the sector model
         sector_courses = sector[0].related_courses.all()
         serializer  = CourseListSerializer(sector_courses, many=True)
 
